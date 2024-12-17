@@ -1,4 +1,4 @@
-FROM python:3.12
+FROM python:3.11
 
 ARG APP_HOME=/app
 WORKDIR ${APP_HOME}
@@ -17,8 +17,9 @@ COPY . ${APP_HOME}
 # running migrations
 RUN python manage.py migrate
 
-# gunicorn
+ENV PORT=8000
 CMD ["gunicorn", "--config", "gunicorn-cfg.py", "--bind", "0.0.0.0:${PORT}", "config.wsgi"]
+
 
 # Copy entrypoint.sh
 COPY entrypoint.sh /entrypoint.sh
