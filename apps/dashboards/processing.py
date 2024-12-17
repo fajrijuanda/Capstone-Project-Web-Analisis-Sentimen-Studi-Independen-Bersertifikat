@@ -220,15 +220,24 @@ def analyze_and_save_sentiment(data_instance, is_twitter=False, auth_token=None)
                 cleaned_text = preprocess_text(tweet_text)
 
                 # Perform sentiment analysis
-                sentiment_results, keywords = perform_sentiment_analysis(cleaned_text)
-
-                # Extract created_at from CSV or use current time
+                # Cek duplikasi sebelum menyimpan
                 created_at_raw = row.get("created_at", "")
                 try:
                     created_at = datetime.strptime(created_at_raw, "%a %b %d %H:%M:%S %z %Y") if created_at_raw else now()
                 except ValueError:
                     logger.warning(f"Invalid date format in created_at: {created_at_raw}, using current time.")
                     created_at = now()
+
+                # Cek apakah komentar sudah ada di database
+                if CommentData.objects.filter(
+                    topic=data_instance.topic,
+                    comment=cleaned_text,
+                    created_at=created_at
+                ).exists():
+                    logger.info("Duplicate tweet detected. Skipping insertion.")
+                    continue
+                
+                sentiment_results, keywords = perform_sentiment_analysis(cleaned_text)
 
                 # Save the cleaned text to CommentData and Result
                 comment_instance = CommentData.objects.create(
