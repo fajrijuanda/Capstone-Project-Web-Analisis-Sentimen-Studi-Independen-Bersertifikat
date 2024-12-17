@@ -1,14 +1,8 @@
 [phases.setup]
-apt_pkgs = ["build-essential", "curl"]
-cmds = [
-    "curl https://sh.rustup.rs -sSf | sh -s -- -y",
-    "source $HOME/.cargo/env"
-]
+nixPkgs = ["python311"]
 
 [phases.build]
-cmds = [
-    "pip install -r requirements.txt"
-]
+cmds = ["pip install --upgrade pip", "pip install -r requirements.txt"]
 
 [start]
-cmd = "gunicorn config.wsgi:application --bind 0.0.0.0:${PORT}"
+cmd = "gunicorn projectname.wsgi:application --config gunicorn-cfg.py"
