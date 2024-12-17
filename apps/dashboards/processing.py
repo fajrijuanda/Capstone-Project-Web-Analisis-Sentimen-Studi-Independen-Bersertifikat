@@ -127,8 +127,7 @@ def preprocess_text(text):
     # Normalize whitespace
     text = " ".join(text.split())
 
-    # Convert to lowercase
-    return text.lower()
+    return text
 
 
 def perform_sentiment_analysis(text):
@@ -260,21 +259,26 @@ def analyze_and_save_sentiment(data_instance, is_twitter=False, auth_token=None)
             cleaned_text = preprocess_text(data_instance.comment)
             sentiment_results, keywords = perform_sentiment_analysis(cleaned_text)
 
-            # Use current time for created_at in manual input
-            comment_instance = CommentData.objects.create(
-                user=data_instance.user,
-                topic=data_instance.topic,
-                comment=cleaned_text,
-                created_at=now(),  # Waktu saat ini
-            )
+            # Cek apakah komentar sudah ada sebelumnya
+            if not CommentData.objects.filter(
+                user=data_instance.user, topic=data_instance.topic, comment=cleaned_text
+            ).exists():
+                comment_instance = CommentData.objects.create(
+                    user=data_instance.user,
+                    topic=data_instance.topic,
+                    comment=cleaned_text,
+                    created_at=timezone.now(),
+                )
+                Result.objects.create(
+                    comment=comment_instance,
+                    positive_percentage=sentiment_results["positive"],
+                    neutral_percentage=sentiment_results["neutral"],
+                    negative_percentage=sentiment_results["negative"],
+                    keywords=keywords,
+                )
+            else:
+                logger.info("Duplicate comment detected. Skipping insertion.")
 
-            Result.objects.create(
-                comment=comment_instance,
-                positive_percentage=sentiment_results["positive"],
-                neutral_percentage=sentiment_results["neutral"],
-                negative_percentage=sentiment_results["negative"],
-                keywords=keywords,
-            )
 
             return {
                 "status": "success",

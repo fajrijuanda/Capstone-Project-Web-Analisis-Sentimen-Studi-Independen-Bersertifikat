@@ -73,7 +73,7 @@ class CommentView(LoginRequiredMixin, TemplateView):
                         "topic": comment.topic,
                         "topic": comment.topic,
                         "comment": comment.comment,
-                        "date": comment.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                        "date": comment.created_at.strftime("%Y-%m-%d %H:%M:%S") if comment.created_at else "N/A",
                         "twitter_data": {
                             "id": (
                                 comment.twitter_data.id
