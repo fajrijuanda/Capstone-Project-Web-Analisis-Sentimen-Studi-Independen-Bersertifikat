@@ -17,6 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 from collections import defaultdict
 from django.db.models import Q
 from django.contrib.auth.models import User
+from django.utils import timezone
 import logging
 
 logger = logging.getLogger(__name__)
@@ -174,24 +175,37 @@ def add_comment(request):
 
                 if not all([topic, comment]):
                     return JsonResponse(
-                        {
-                            "status": "error",
-                            "message": "Topic and comment are required",
-                        },
+                        {"status": "error", "message": "Topic and comment are required"},
                         status=400,
                     )
 
-                # Save comment and process it
+                # Cek duplikasi tanpa preprocessing (mentah dari input)
+                existing_comment = CommentData.objects.filter(
+                    user=request.user if request.user.is_authenticated else None,
+                    topic=topic,
+                    comment=comment,
+                ).exists()
+
+                if existing_comment:
+                    logger.info("Duplicate manual comment detected. Skipping insertion.")
+                    return JsonResponse(
+                        {"status": "warning", "message": "Duplicate comment detected"},
+                        status=200,
+                    )
+
+                # Simpan data ke database dan analisis sentimen
                 comment_data = CommentData.objects.create(
                     user=request.user if request.user.is_authenticated else None,
                     topic=topic,
                     comment=comment,
+                    created_at=timezone.now(),  # Simpan waktu saat ini
                 )
 
-                # Analyze the manual comment
+                # Panggil fungsi analisis sentimen
                 result = analyze_and_save_sentiment(comment_data, is_twitter=False)
 
                 return JsonResponse(result)
+
 
             elif input_type == "twitter":
                 # Handle Twitter token input
