@@ -18,4 +18,10 @@ COPY . ${APP_HOME}
 RUN python manage.py migrate
 
 # gunicorn
-CMD ["gunicorn", "--config", "gunicorn-cfg.py", "config.wsgi"]
+CMD ["gunicorn", "--config", "gunicorn-cfg.py", "--bind", "0.0.0.0:${PORT}", "config.wsgi"]
+
+# Copy entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
