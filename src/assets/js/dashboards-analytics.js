@@ -866,10 +866,6 @@
     const swiperInstance = new Swiper('.swiper-3d-container', {
       effect: 'slide',
       autoHeight: true,
-      // creativeEffect: {
-      //   prev: { translate: ['-120%', 0, -500] },
-      //   next: { translate: ['120%', 0, -500] }
-      // },
       slidesPerView: 1,
       loop: false,
       autoplay: false,
@@ -879,7 +875,20 @@
         }
       }
     });
+    
+    document.addEventListener('shown.bs.collapse', () => {
+      // Perbarui tinggi Swiper setiap kali accordion terbuka
+      if (swiperInstance) {
+        swiperInstance.updateAutoHeight();
+      }
+    });
 
+    document.addEventListener('hidden.bs.collapse', () => {
+      // Perbarui tinggi Swiper setiap kali accordion tertutup
+      if (swiperInstance) {
+        swiperInstance.updateAutoHeight();
+      }
+    });
     const paginationContainer = document.querySelector('.pagination.pagination-rounded');
 
     paginationContainer.querySelector('.first').addEventListener('click', () => swiperInstance.slideTo(0));

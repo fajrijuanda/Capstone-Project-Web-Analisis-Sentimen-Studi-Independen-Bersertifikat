@@ -4,15 +4,16 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from django.utils import timezone
 from apps.dashboards.models import CommentData, TwitterData
 from apps.comment.models import Result
-from datetime import datetime, timedelta
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import re
 import torch
 import subprocess
 import os
 import shutil
+from django.utils.timezone import now
+from datetime import datetime
 
-# Configure logging
 logger = logging.getLogger(__name__)
 
 os.environ["PATH"] += os.pathsep + r"C:\Program Files\nodejs"
@@ -176,12 +177,7 @@ def perform_sentiment_analysis(text):
         return {"positive": 0.0, "neutral": 0.0, "negative": 0.0}, {}
 
 
-from django.utils.timezone import now
-import pandas as pd
-from datetime import datetime
-import logging
 
-logger = logging.getLogger(__name__)
 
 def analyze_and_save_sentiment(data_instance, is_twitter=False, auth_token=None):
     try:
@@ -257,28 +253,18 @@ def analyze_and_save_sentiment(data_instance, is_twitter=False, auth_token=None)
         else:
             # Handle manual comment processing
             cleaned_text = preprocess_text(data_instance.comment)
+
+            # Perform sentiment analysis
             sentiment_results, keywords = perform_sentiment_analysis(cleaned_text)
 
-            # Cek apakah komentar sudah ada sebelumnya
-            if not CommentData.objects.filter(
-                user=data_instance.user, topic=data_instance.topic, comment=cleaned_text
-            ).exists():
-                comment_instance = CommentData.objects.create(
-                    user=data_instance.user,
-                    topic=data_instance.topic,
-                    comment=cleaned_text,
-                    created_at=timezone.now(),
-                )
-                Result.objects.create(
-                    comment=comment_instance,
-                    positive_percentage=sentiment_results["positive"],
-                    neutral_percentage=sentiment_results["neutral"],
-                    negative_percentage=sentiment_results["negative"],
-                    keywords=keywords,
-                )
-            else:
-                logger.info("Duplicate comment detected. Skipping insertion.")
-
+            # Save analysis results for the already created CommentData
+            Result.objects.create(
+                comment=data_instance,
+                positive_percentage=sentiment_results["positive"],
+                neutral_percentage=sentiment_results["neutral"],
+                negative_percentage=sentiment_results["negative"],
+                keywords=keywords,
+            )
 
             return {
                 "status": "success",

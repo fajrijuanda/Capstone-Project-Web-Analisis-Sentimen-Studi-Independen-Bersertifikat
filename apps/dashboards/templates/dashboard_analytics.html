@@ -159,7 +159,7 @@
   
 
   <div class="col-xxl-12">
-    <div class="card swiper-container swiper-container-horizontal swiper swiper-3d-container">
+    <div class="card swiper-container swiper-container-horizontal swiper swiper-3d-container" style="width: 100%; margin-bottom: 1rem; box-sizing: border-box;">
       <div id="no-data-message" class="text-center my-5" style="display: none; margin-bottom: 3rem !important;">
         <h4>No Available Data</h4>
         <p>Please add comments or connect your Twitter account to get started.</p>
@@ -192,29 +192,29 @@
     </div>
   </div>
   <!-- Back to Top Button -->
-  
+  <button
+  id="backToTopBtn"
+  class="btn btn-primary"
+  style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    display: none;
+    z-index: 9999;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding: 0;
+    text-align: center;
+    line-height: 45px;
+  "
+  >
+  <i class="ti ti-arrow-up"></i>
+  </button>
 
 </div>
 <!-- Back to Top Button -->
-<button
-id="backToTopBtn"
-class="btn btn-primary"
-style="
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 45px;
-  height: 45px;
-  display: none;
-  z-index: 9999;
-  border-radius: 50%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  padding: 0;
-  text-align: center;
-  line-height: 45px;
-"
->
-<i class="ti ti-arrow-up"></i>
-</button>
+
   {% include "partials/_modals/modal_add_new_address.html" %} {% endblock %}
 </div>
