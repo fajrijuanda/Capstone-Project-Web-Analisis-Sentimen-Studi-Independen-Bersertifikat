@@ -15,6 +15,7 @@ from pathlib import Path
 
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
+import dj_database_url
 
 from .template import TEMPLATE_CONFIG, THEME_LAYOUT_DIR, THEME_VARIABLES
 
@@ -31,12 +32,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", default="awjojawodjao")
 
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "True").lower() in ["true", "yes", "1"]
+DEBUG = os.environ.get("DEBUG", "False").lower() in ["true", "yes", "1"]
+
 
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", '*']
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "*", ".railway.app"]
 
 # Current DJANGO_ENVIRONMENT
 ENVIRONMENT = os.environ.get("DJANGO_ENVIRONMENT", default="local")
@@ -142,6 +143,10 @@ DATABASES = {
     }
 }
 
+# Gunakan PostgreSQL jika DATABASE_URL tersedia di environment
+if os.environ.get("DATABASE_URL"):
+    DATABASES["default"] = dj_database_url.config(default=os.environ.get("DATABASE_URL"))
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -195,6 +200,7 @@ LOCALE_PATHS = [
 STATIC_URL = "/staticfiles/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 STATICFILES_DIRS = [
@@ -244,6 +250,7 @@ SESSION_COOKIE_SAMESITE = "Lax"
 SESSION_COOKIE_AGE = 3600
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://*.railway.app",
     "http://localhost:5050",
 ]
 
@@ -271,6 +278,10 @@ LOGGING = {
             "level": "DEBUG",
             "propagate": True,
         },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",  # Set level to WARNING for production
     },
 }
 
