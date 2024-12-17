@@ -1,0 +1,137 @@
+<div id="supportTrackerOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.9); z-index: 9999; justify-content: center; align-items: center;">
+  <div id="supportTracker"></div>
+</div>
+<!-- Add New Address Modal -->
+
+<div class="modal fade" id="addNewAddress" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-simple modal-add-new-address modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="text-center mb-6">
+          <h4 class="address-title mb-2">Select Option</h4>
+          <p class="address-subtitle">Choose how you want to input data</p>
+        </div>
+        
+        <form id="addNewAddressForm" class="row g-6" method="POST" action="{% url 'add_comment' %}">
+          {% csrf_token %}
+          <div class="col-12">
+            <div class="row">
+              <!-- Option: Token Twitter -->
+              <div class="col-md mb-md-0 mb-4">
+                <div class="form-check custom-option custom-option-icon">
+                  <label class="form-check-label custom-option-content" for="customRadioTwitter">
+                    <span class="custom-option-body">
+                      <i class="ti ti-brand-x ti-28px mb-2"></i>
+                      <span class="custom-option-title">Twitter</span>
+                    </span>
+                    <input
+                      name="customRadioIcon"
+                      class="form-check-input"
+                      type="radio"
+                      value="twitter"
+                      id="customRadioTwitter"
+                      checked
+                    />
+                  </label>
+                </div>
+              </div>
+              <!-- Option: Comment -->
+              <div class="col-md mb-md-0 mb-4">
+                <div class="form-check custom-option custom-option-icon">
+                  <label class="form-check-label custom-option-content" for="customRadioComment">
+                    <span class="custom-option-body">
+                      <i class="ti ti-message ti-28px mb-2"></i>
+                      <span class="custom-option-title">Comment</span>
+                    </span>
+                    <input
+                      name="customRadioIcon"
+                      class="form-check-input"
+                      type="radio"
+                      value="comment"
+                      id="customRadioComment"
+                    />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Token Twitter Form -->
+          <div class="col-12 token-form">
+            <div class="row">
+              <div class="col-12">
+                <label class="form-label" for="tokenInput">Token</label>
+                <input
+                  type="text"
+                  id="tokenInput"
+                  name="token"
+                  class="form-control"
+                  placeholder="Enter Twitter API Token"
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="topicInput">Topic</label>
+                <input
+                  type="text"
+                  id="topicInput"
+                  name="topic"
+                  class="form-control"
+                  placeholder="Enter Topic"
+                />
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label" for="dateFromInput">From</label>
+                <input
+                  type="date"
+                  id="dateFromInput"
+                  name="date_from"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label" for="dateUntilInput">Until</label>
+                <input
+                  type="date"
+                  id="dateUntilInput"
+                  name="date_until"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <!-- Comment Form -->
+          <div class="col-12 comment-form d-none">
+            <div class="row">
+              <div class="col-12">
+                <label class="form-label" for="commentTopicInput">Topic</label>
+                <input
+                  type="text"
+                  id="commentTopicInput"
+                  name="comment_topic"
+                  class="form-control"
+                  placeholder="Enter Topic"
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="commentTextInput">Comment</label>
+                <textarea
+                  id="commentTextInput"
+                  name="comment"
+                  class="form-control"
+                  rows="4"
+                  placeholder="Enter your comments here..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 text-center mt-4">
+            <button type="button" class="btn btn-label-secondary me-5" data-bs-dismiss="modal" aria-label="Close">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

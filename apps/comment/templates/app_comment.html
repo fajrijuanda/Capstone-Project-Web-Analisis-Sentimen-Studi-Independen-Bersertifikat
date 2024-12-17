@@ -1,0 +1,90 @@
+{% extends layout_path %} 
+{% load static %} 
+{% load i18n %} 
+{% block title %}eCommerce Manage reviews - App{% endblock%} 
+{% block vendor_css %} 
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/apex-charts/apex-charts.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/rateyo/rateyo.css' %}" />
+{% endblock vendor_css %} 
+{% block vendor_js %} 
+{{ block.super }}
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/apex-charts/apexcharts.js' %}"></script>
+<script src="{% static 'vendor/libs/rateyo/rateyo.js' %}"></script>
+{% endblock vendor_js %} 
+{% block page_css %} 
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/css/pages/app-ecommerce.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/css/pages/app-logistics-dashboard.css' %}" />
+{% endblock page_css %} 
+{% block page_js %} 
+{{ block.super }}
+<script src="{% static 'js/app-ecommerce-reviews.js' %}"></script>
+<script src="{% static 'js/extended-ui-star-ratings.js' %}"></script>
+{% endblock page_js %} 
+{% block content %}
+<div class="row mb-6 g-6">
+  <!-- Topics -->
+  <!-- Topics -->
+  <div class="col-lg-12">
+    <div class="card h-100">
+      <div class="card-header d-flex align-items-center justify-content-between">
+        <h5 class="card-title m-0 me-2">The Most Topic Commented</h5>
+        <div class="dropdown">
+          <button
+            class="btn btn-text-secondary rounded-pill text-muted border-0 p-2 me-n1"
+            type="button"
+            id="topic"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i class="ti ti-dots-vertical ti-md text-muted"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="topic">
+            <a class="dropdown-item" href="javascript:void(0);">Highest Views</a>
+            <a class="dropdown-item" href="javascript:void(0);">See All</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-body row g-3">
+        <div class="col-md-8">
+          <div id="horizontalBarChart"></div>
+        </div>
+        <div class="col-md-4 d-flex flex-column sidebar-topics">
+          <!-- Sidebar items akan dimuat dinamis di sini -->
+        </div>
+      </div>
+    </div>
+  </div>
+<!--/ Topics -->
+
+  <!--/ Topics -->
+</div>
+
+<!-- review List Table -->
+<div class="card">
+  <div class="card-datatable table-responsive">
+    <table class="datatables-comment table border-top">
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>Topic</th>
+          <th class="text-nowrap">User</th>
+          <th>Comment</th>
+          <th>Date</th>
+          <th class="text-nowrap">Sentiment</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

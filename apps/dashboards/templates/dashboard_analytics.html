@@ -1,0 +1,219 @@
+{% extends layout_path %} 
+{% load static %} 
+{% load i18n %} 
+{% block title %}Dashboard - Analytics{% endblock %} 
+{%block vendor_css %} 
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/apex-charts/apex-charts.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/swiper/swiper.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/bs-stepper/bs-stepper.css' %}" />
+{% endblock vendor_css %}
+{% block vendor_js %} 
+{{ block.super }}
+<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+<script src="{% static 'vendor/libs/apex-charts/apexcharts.js' %}"></script>
+<script src="{% static 'vendor/libs/swiper/swiper.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+<script src="{% static 'vendor/libs/bs-stepper/bs-stepper.js' %}"></script>
+<script src="{% static 'vendor/libs/chartjs/chartjs.js' %}"></script>
+{% endblock vendor_js %} 
+{% block page_css %} 
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/css/pages/cards-advance.css' %}" />
+{% endblock page_css %} 
+{% block page_js %} 
+{{ block.super }}
+<script src="{% static 'js/dashboards-analytics.js' %}"></script>
+<script src="{% static 'js/modal-add-new-address.js' %}" defer></script>
+<script src="{% static 'js/charts-chartjs.js' %}"></script>
+{% endblock page_js %} 
+{% block content %}
+<div class="row g-6">
+  <!-- Website Analytics -->
+  <div class="col-lg-8">
+    <div class="swiper-container swiper-container-horizontal swiper swiper-card-advance-bg" id="swiper-with-pagination-cards">
+      <div class="swiper-wrapper">
+  
+        <!-- Slide 1: Total Komentar & Traffic -->
+        <div class="swiper-slide">
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-white mb-0">Website Analytics</h5>
+              <small>Total {{ total_comments }} Comments Recorded</small>
+            </div>
+            <div class="row">
+              <div class="col-lg-7 col-md-9 col-12 pt-md-9">
+                <h6 class="text-white mt-3 mb-4">Traffic</h6>
+                <div class="row">
+                  <div class="col-6">
+                    <ul class="list-unstyled mb-0">
+                      <li class="d-flex mb-4 align-items-center">
+                        <p class="mb-0 fw-medium me-2 website-analytics-text-bg" id="total-users">{{ total_users }}</p>
+                        <p class="mb-0">Total Users</p>
+                      </li>
+                      <li class="d-flex align-items-center">
+                        <p class="mb-0 fw-medium me-2 website-analytics-text-bg" id="total-comments">{{ total_comments }}</p>
+                        <p class="mb-0">Total Comments</p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5 col-md-3 col-12 text-center">
+                <img src="{% static 'img/illustrations/card-website-analytics-1.png' %}" alt="Website Analytics" height="150" />
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Slide 2: Komentar Manual vs Twitter -->
+        <div class="swiper-slide">
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-white mb-0">Comments Source</h5>
+              <small>Manual vs Twitter Comments</small>
+            </div>
+            <div class="row">
+              <div class="col-lg-7 col-md-9 col-12 pt-md-9">
+                <h6 class="text-white mt-3 mb-4">Comment Distribution</h6>
+                <ul class="list-unstyled mb-0">
+                  <li class="d-flex mb-4 align-items-center">
+                    <p class="mb-0 fw-medium me-2 website-analytics-text-bg" id="twitter-comments" >{{ total_twitter_comments }}</p>
+                    <p class="mb-0">Twitter Comments</p>
+                  </li>
+                  <li class="d-flex align-items-center">
+                    <p class="mb-0 fw-medium me-2 website-analytics-text-bg" id="manual-comments">{{ total_manual_comments }}</p>
+                    <p class="mb-0">Manual Comments</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-5 col-md-3 col-12 text-center">
+                <img src="{% static 'img/illustrations/card-website-analytics-2.png' %}" alt="Comments Source" height="150" />
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Slide 3: Topik Terpopuler -->
+        <div class="swiper-slide">
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-white mb-0">Top Topics</h5>
+              <small>Most Analyzed Topics</small>
+            </div>
+            <div class="row">
+              <div class="col-lg-7 col-md-9 col-12 pt-md-9">
+                <h6 class="text-white mt-3 mb-4">Popular Topics</h6>
+                <ul class="list-unstyled mb-0" id="popular-topics">
+                  {% for topic in popular_topics %}
+                  <li class="d-flex mb-4 align-items-center">
+                    <p class="mb-0 fw-medium me-2 website-analytics-text-bg">{{ topic.total }}</p>
+                    <p class="mb-0">{{ topic.comment__topic }}</p>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <div class="col-lg-5 col-md-3 col-12 text-center">
+                <img src="{% static 'img/illustrations/card-website-analytics-3.png' %}" alt="Popular Topics" height="150" />
+              </div>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+  
+  <!--/ Website Analytics -->
+  <!-- Add Comment -->
+  <div class="col-lg-4">
+    <div class="card h-100">
+      <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+        <i class="mb-4 text-heading ti ti-message-plus ti-32px"></i>
+        <h5>Add New Comment</h5>
+        <p>Input Twitter API Token or Comment Manually</p>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewAddress">
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+  <!--/ Add Comment -->
+ 
+
+ 
+  <!-- Analytics Sentiment Reports -->
+  
+
+  <div class="col-xxl-12">
+    <div class="card swiper-container swiper-container-horizontal swiper swiper-3d-container">
+      <div id="no-data-message" class="text-center my-5" style="display: none; margin-bottom: 3rem !important;">
+        <h4>No Available Data</h4>
+        <p>Please add comments or connect your Twitter account to get started.</p>
+      </div>
+      <!-- Swiper Wrapper: Kontainer untuk slide dinamis -->
+      <div class="swiper-wrapper" id="main-swiper-wrapper">
+        <!-- Slide akan dirender oleh JavaScript -->
+      </div>
+
+      <!-- Pagination -->
+      <div style="margin-top: -35px;">
+        <nav aria-label="Page navigation">
+          <ul class="pagination pagination-rounded" style="justify-content: center;">
+            <li class="page-item first">
+              <a class="page-link" href="javascript:void(0);"><i class="ti ti-chevrons-left ti-sm"></i></a>
+            </li>
+            <li class="page-item prev">
+              <a class="page-link" href="javascript:void(0);"><i class="ti ti-chevron-left ti-sm"></i></a>
+            </li>
+            <!-- Pagination items akan dirender oleh JavaScript -->
+            <li class="page-item next">
+              <a class="page-link" href="javascript:void(0);"><i class="ti ti-chevron-right ti-sm"></i></a>
+            </li>
+            <li class="page-item last">
+              <a class="page-link" href="javascript:void(0);"><i class="ti ti-chevrons-right ti-sm"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <!-- Back to Top Button -->
+  <!-- Back to Top Button -->
+  <button
+    id="backToTopBtn"
+    class="btn btn-primary"
+    style="
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 45px;
+      height: 45px;
+      display: none;
+      z-index: 9999;
+      border-radius: 50%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      padding: 0;
+      text-align: center;
+      line-height: 45px;
+    "
+  >
+    <i class="ti ti-arrow-up"></i>
+  </button>
+
+</div>
+  {% include "partials/_modals/modal_add_new_address.html" %} {% endblock %}
+</div>

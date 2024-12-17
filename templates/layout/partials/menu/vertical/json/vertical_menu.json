@@ -1,0 +1,34 @@
+{
+  "menu": [
+    {
+      "name": "Analytics",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "url": "index",
+      "slug": "dashboard-analytics"
+    },
+    {
+      "menu_header": "Data",
+      "permission": "comment.view_comment"
+    },
+    {
+      "name": "Comments",
+      "icon": "menu-icon tf-icons ti ti-brand-hipchat",
+      "url": "comment",
+      "slug": "app-comment",
+      "permission": "comment.view_comment"
+    },
+    {
+      "name": "Users",
+      "icon": "menu-icon tf-icons ti ti-users",
+      "permission": "user.view_user",
+      "slug": "users",
+      "submenu": [
+        {
+          "url": "users-list",
+          "name": "List",
+          "slug": "users-list"
+        }
+      ]
+    }
+  ]
+}
