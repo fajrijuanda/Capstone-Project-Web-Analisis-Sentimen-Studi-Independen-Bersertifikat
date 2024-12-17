@@ -227,15 +227,6 @@ def analyze_and_save_sentiment(data_instance, is_twitter=False, auth_token=None)
                 except ValueError:
                     logger.warning(f"Invalid date format in created_at: {created_at_raw}, using current time.")
                     created_at = now()
-
-                # Cek apakah komentar sudah ada di database
-                if CommentData.objects.filter(
-                    topic=data_instance.topic,
-                    comment=cleaned_text,
-                    created_at=created_at
-                ).exists():
-                    logger.info("Duplicate tweet detected. Skipping insertion.")
-                    continue
                 
                 sentiment_results, keywords = perform_sentiment_analysis(cleaned_text)
 
