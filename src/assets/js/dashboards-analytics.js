@@ -328,7 +328,7 @@
       event.preventDefault(); // Prevent default form submission
 
       const formData = new FormData(formElement);
-      const estimatedDuration = twitterRadio.checked ? 300000 : 5000; // 5 menit atau 5 detik
+      const estimatedDuration = twitterRadio.checked ? 300000 : 10000; // 5 menit atau 5 detik
       // Tampilkan overlay dan mulai animasi tracker
       toggleOverlay(true);
       animateSupportTracker(estimatedDuration); // Animasi selama 10 detik jika fetch lambat
